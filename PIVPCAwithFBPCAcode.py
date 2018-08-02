@@ -1,10 +1,9 @@
 import numpy as np
-from numpy import ndarray
 import scipy as sc
-from scipy.sparse.linalg import svds, eigs
+from scipy.sparse.linalg import svds
 from scipy.sparse import csr_matrix
 from scipy import misc
-from skimage import io, img_as_ubyte
+from skimage import io
 import skimage
 import os
 import fnmatch
@@ -14,7 +13,7 @@ import fnmatch
 # Input Variables
 
 NumOfSubtractionModes = 1 # This doesn't work for anything but 1 mode yet
-NumOfImagesPerSVDCycle = 100
+NumOfImagesPerSVDCycle = 50
 
 
 Frames = ['*V3VLA*','*V3VLB*','*V3VRA*','*V3VRB*','*V3VTA*','*V3VTB*']
@@ -47,7 +46,7 @@ while CycleNumber <= NumOfCycles: # Cycle through all the files in NumOfImagesPe
 		ImageVectors = np.transpose(ImageVectors)
 		Images = np.reshape(ImageVectors,[ImageSize[0],ImageSize[1],NumberofFiles],order="F")
 
-		u, s, v = sc.sparse.linalg.svds(sc.sparse.csr_matrix.asfptype(ImageVectors),k=NumOfSubtractionModes,which='LM')
+		u, s, v = sc.sparse.linalg.svds(csr_matrix.asfptype(ImageVectors),k=NumOfSubtractionModes,which='LM')
 		um = np.asmatrix(u)
 		sm = np.asmatrix(s)
 		vm = np.asmatrix(v)
