@@ -21,12 +21,12 @@ frame = 0
 while frame < 6:
 	FrameNames = fnmatch.filter(FileNames,Frames[frame])
 	NumberofFiles = len(FrameNames)
-	NumOfCycles = NumberofFiles/25
+	NumOfCycles = NumberofFiles/50
 	n = 1
 	while n <= NumOfCycles:
-		nFileNames = FrameNames[((25*n)-25):((25*n))]
+		nFileNames = FrameNames[((50*n)-50):((50*n))]
 		#print(nFileNames)
-		nNumberofFiles = 25
+		nNumberofFiles = 50
 		
 		ImageSize = np.shape(io.imread("./RawData/"+nFileNames[0],as_gray=True))
 
@@ -55,30 +55,35 @@ while frame < 6:
 		sm = np.asmatrix(s)
 		vm = np.asmatrix(v)
 
-		i = 1
 		Mode1 = [um[:,0]*sm[:,0]*vm[0,:]]
-		Mode1 = np.reshape(Mode1,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
-		if NumOfModes > 1:
-			Mode2 = [um[:,1]*sm[:,1]*vm[1,:]]
-			Mode2 = np.reshape(Mode2,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
-		if NumOfModes > 2:
-			Mode3 = [um[:,2]*sm[:,2]*vm[2,:]]
-			Mode3 = np.reshape(Mode3,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
-		if NumOfModes > 3:
-			Mode4 = [um[:,3]*sm[:,3]*vm[3,:]]
-			Mode4 = np.reshape(Mode4,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
-		if NumOfModes > 4:
-			Mode5 = [um[:,4]*sm[:,4]*vm[4,:]]
-			Mode5 = np.reshape(Mode5,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
-		if NumOfModes > 5:
-			Mode6 = [um[:,5]*sm[:,5]*vm[5,:]]
-			Mode6 = np.reshape(Mode6,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
+		print(np.shape(Mode1))
+		Processed = Images - np.reshape(Mode1,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
+		print(np.shape(Images))
+		print(np.shape(Processed))
+		print(np.mean(Images))
+		print(np.mean(Processed))
+		#Mode1 = np.reshape(Mode1,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
+		#if NumOfModes > 1:
+		#	Mode2 = [um[:,1]*sm[:,1]*vm[1,:]]
+		#	Mode2 = np.reshape(Mode2,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
+		#if NumOfModes > 2:
+		#	Mode3 = [um[:,2]*sm[:,2]*vm[2,:]]
+		#	Mode3 = np.reshape(Mode3,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
+		#if NumOfModes > 3:
+		#	Mode4 = [um[:,3]*sm[:,3]*vm[3,:]]
+		#	Mode4 = np.reshape(Mode4,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
+		#if NumOfModes > 4:
+		#	Mode5 = [um[:,4]*sm[:,4]*vm[4,:]]
+		#	Mode5 = np.reshape(Mode5,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
+		#if NumOfModes > 5:
+		#	Mode6 = [um[:,5]*sm[:,5]*vm[5,:]]
+		#	Mode6 = np.reshape(Mode6,[ImageSize[0],ImageSize[1],nNumberofFiles],order='F')
 
 		i = 0
-		while i < 25:
+		while i < 50:
 			print(nFileNames[i])
-			tempbyteimage = misc.bytescale((((((Images[:,:,i]-Mode1[:,:,i])))))) #-Mode2[:,:,i])-Mode3[:,:,i])-Mode4[:,:,i])-Mode5[:,:,i])-Mode6[:,:,i])
-			tempbyteimage = tempbyteimage - np.median(tempbyteimage)
+			#tempbyteimage = misc.bytescale((((((Images[:,:,i]-Mode1[:,:,i])))))) #-Mode2[:,:,i])-Mode3[:,:,i])-Mode4[:,:,i])-Mode5[:,:,i])-Mode6[:,:,i])
+			tempbyteimage = Processed[:,:,i] - np.median(Processed[:,:,i])
 			#tempbytemean = np.mean(tempbyteimage[tempbyteimage > 0])
 			#tempbytestd = np.std(tempbyteimage[tempbyteimage > 0])
 			tempbyteimage[tempbyteimage < 0] = 0
@@ -87,7 +92,7 @@ while frame < 6:
 			#tempbyteimage[tempbyteimage > 0.95*np.max(tempbyteimage)] = 0
 			#tempbyteimage[0,0]= 0
 			#tempbyteimage[0,1] = 255
-			misc.imsave('./PCAProcessed/'+nFileNames[i],misc.bytescale(tempbyteimage))
+			misc.imsave('/media/alexa/Alexa/MCWAlexa/July19th/PCAProcessed/PCA'+nFileNames[i],misc.bytescale(tempbyteimage))
 			i += 1
 		n += 1
 	frame += 1
