@@ -13,7 +13,7 @@ import fnmatch
 # Input Variables
 
 NumOfSubtractionModes = 1 # This doesn't work for anything but 1 mode yet
-NumOfImagesPerSVDCycle = 150
+NumOfImagesPerSVDCycle = 200
 
 
 Frames = ['*V3VLA*','*V3VLB*','*V3VRA*','*V3VRB*','*V3VTA*','*V3VTB*']
