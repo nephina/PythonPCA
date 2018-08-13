@@ -1,4 +1,3 @@
-import numpy as np
 import scipy as sc
 from scipy.sparse.linalg import svds
 from scipy.sparse import csr_matrix
